@@ -6,17 +6,26 @@ import "./style.scss";
 
 const Slider = () => {
   const { data } = useData();
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0); // Déclaration d'un état pour l'index du carrousel
 
   // ---Classement des evenements par ordre Croissant (à corriger en décroissant)-----
+
+  // const byDateDesc = data?.focus.sort((evtA, evtB) =>
+  //   new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
+  // );
+
+  // Correction----------------------
+
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
-    new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
+    new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
   );
+  //-----------------------------------
+
 
   // ---Fonction pour passer au suivant
   const nextCard = () => {
     setTimeout(
-      () => setIndex(index < byDateDesc.length ? index + 1 : 0),
+      () => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0),
       5000
     );
   };
@@ -24,7 +33,6 @@ const Slider = () => {
   useEffect(() => {
     nextCard();
   });
-
 
   return (
     <div className="SlideCardList">
@@ -45,8 +53,9 @@ const Slider = () => {
             </div>
           </div>
 
-          {/* ----Pagination----- */}
-          <div className="SlideCard__paginationContainer">
+          {/* ----------BULLET POINTS----------------- */}
+
+          {/* <div className="SlideCard__paginationContainer">
             <div className="SlideCard__pagination">
               {byDateDesc.map((_, radioIdx) => (
                 <input
@@ -57,7 +66,24 @@ const Slider = () => {
                 />
               ))}
             </div>
+          </div> */}
+
+          {/* ---corrections-- */}
+
+          <div className="SlideCard__paginationContainer">
+            <div className="SlideCard__pagination">
+              {byDateDesc.map((bullet, radioIdx) => (
+                <input
+                  key={`${bullet.id}`}
+                  type="radio"
+                  name="radio-button"
+                  checked={index === radioIdx}
+                />
+              ))}
+            </div>
           </div>
+          {/* ---------------------------------------------- */}
+
         </>
       ))}
     </div>
@@ -65,3 +91,5 @@ const Slider = () => {
 };
 
 export default Slider;
+
+
