@@ -19,13 +19,19 @@ export const api = {
 export const DataProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
+  const [last, setLast] = useState(null); // Nouvelle state pour stocker le dernier événement
+
   const getData = useCallback(async () => {
     try {
-      setData(await api.loadData());
+      const eventData = await api.loadData();
+      setData(eventData);
+      // Mettre à jour le dernier événement
+      setLast(eventData.events[eventData.events.length - 1]);
     } catch (err) {
       setError(err);
     }
   }, []);
+
   useEffect(() => {
     if (data) return;
     getData();
@@ -37,6 +43,7 @@ export const DataProvider = ({ children }) => {
       value={{
         data,
         error,
+        last, // Inclure le dernier événement dans la valeur fournie par le contexte
       }}
     >
       {children}
