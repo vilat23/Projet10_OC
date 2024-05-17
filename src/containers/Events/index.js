@@ -14,6 +14,15 @@ const EventList = () => {
   const [type, setType] = useState(); // Déclaration d'un état pour la catégorie sélectionnée
   const [currentPage, setCurrentPage] = useState(1); // Déclaration d'un état pour la page actuelle
 
+
+
+  const filteredEvents = (
+    (!type ? data?.events : data?.events) || []
+  )
+
+
+
+
   // Filtrage des événements en fonction de la catégorie sélectionnée et de la pagination
   const filteredEvents = (
     (!type ? data?.events : data?.events.filter(event => event.type === type)) || []
